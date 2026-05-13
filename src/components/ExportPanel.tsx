@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Download, FileImage, FileText, Image } from 'lucide-react';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { QRCodeOptions } from '../types/qrcode';
+import React, { useState } from "react";
+import { Download, FileImage, FileText, Image } from "lucide-react";
+import jsPDF from "jspdf";
+import { QRCodeOptions } from "../types/qrcode";
 
 interface ExportPanelProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -11,13 +10,15 @@ interface ExportPanelProps {
 
 const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
   const [exporting, setExporting] = useState(false);
-  const [exportFormat, setExportFormat] = useState<'png' | 'svg' | 'pdf'>('png');
+  const [exportFormat, setExportFormat] = useState<"png" | "svg" | "pdf">(
+    "png",
+  );
   const [exportQuality, setExportQuality] = useState(1);
   const [exportScale, setExportScale] = useState(2);
 
   const downloadFile = (blob: Blob, filename: string) => {
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = filename;
     document.body.appendChild(a);
@@ -32,27 +33,31 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
     try {
       setExporting(true);
       const canvas = canvasRef.current;
-      
+
       // Create a higher resolution version
-      const exportCanvas = document.createElement('canvas');
-      const exportCtx = exportCanvas.getContext('2d')!;
-      
+      const exportCanvas = document.createElement("canvas");
+      const exportCtx = exportCanvas.getContext("2d")!;
+
       const scaledSize = canvas.width * exportScale;
       exportCanvas.width = scaledSize;
       exportCanvas.height = scaledSize;
-      
+
       // Scale up the context
       exportCtx.scale(exportScale, exportScale);
       exportCtx.drawImage(canvas, 0, 0);
-      
-      exportCanvas.toBlob((blob) => {
-        if (blob) {
-          const filename = `qr-code-${Date.now()}.png`;
-          downloadFile(blob, filename);
-        }
-      }, 'image/png', exportQuality);
+
+      exportCanvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const filename = `qr-code-${Date.now()}.png`;
+            downloadFile(blob, filename);
+          }
+        },
+        "image/png",
+        exportQuality,
+      );
     } catch (error) {
-      console.error('Error exporting PNG:', error);
+      console.error("Error exporting PNG:", error);
     } finally {
       setExporting(false);
     }
@@ -63,12 +68,10 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
 
     try {
       setExporting(true);
-      
+
       // Create SVG from canvas
       const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d')!;
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      
+
       // Simple SVG creation (this is a basic implementation)
       const svg = `
         <svg width="${canvas.width}" height="${canvas.height}" xmlns="http://www.w3.org/2000/svg">
@@ -79,12 +82,12 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
           </foreignObject>
         </svg>
       `;
-      
-      const blob = new Blob([svg], { type: 'image/svg+xml' });
+
+      const blob = new Blob([svg], { type: "image/svg+xml" });
       const filename = `qr-code-${Date.now()}.svg`;
       downloadFile(blob, filename);
     } catch (error) {
-      console.error('Error exporting SVG:', error);
+      console.error("Error exporting SVG:", error);
     } finally {
       setExporting(false);
     }
@@ -95,38 +98,38 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
 
     try {
       setExporting(true);
-      
+
       const canvas = canvasRef.current;
-      const imgData = canvas.toDataURL('image/png', exportQuality);
-      
+      const imgData = canvas.toDataURL("image/png", exportQuality);
+
       const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
       });
-      
+
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      
+
       // Calculate dimensions to maintain aspect ratio
       const aspectRatio = canvas.width / canvas.height;
       let imgWidth = pdfWidth - 40; // 20mm margin on each side
       let imgHeight = imgWidth / aspectRatio;
-      
+
       if (imgHeight > pdfHeight - 40) {
         imgHeight = pdfHeight - 40;
         imgWidth = imgHeight * aspectRatio;
       }
-      
+
       const x = (pdfWidth - imgWidth) / 2;
       const y = (pdfHeight - imgHeight) / 2;
-      
-      pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
-      
+
+      pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
+
       const filename = `qr-code-${Date.now()}.pdf`;
       pdf.save(filename);
     } catch (error) {
-      console.error('Error exporting PDF:', error);
+      console.error("Error exporting PDF:", error);
     } finally {
       setExporting(false);
     }
@@ -134,13 +137,13 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
 
   const handleExport = () => {
     switch (exportFormat) {
-      case 'png':
+      case "png":
         exportPNG();
         break;
-      case 'svg':
+      case "svg":
         exportSVG();
         break;
-      case 'pdf':
+      case "pdf":
         exportPDF();
         break;
     }
@@ -149,8 +152,10 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Export Options</h3>
-        
+        <h3 className="text-sm font-semibold text-gray-900 mb-4">
+          Export Options
+        </h3>
+
         <div className="space-y-4">
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-2">
@@ -158,17 +163,17 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { value: 'png', label: 'PNG', icon: Image },
-                { value: 'svg', label: 'SVG', icon: FileImage },
-                { value: 'pdf', label: 'PDF', icon: FileText }
-              ].map(format => (
+                { value: "png", label: "PNG", icon: Image },
+                { value: "svg", label: "SVG", icon: FileImage },
+                { value: "pdf", label: "PDF", icon: FileText },
+              ].map((format) => (
                 <button
                   key={format.value}
                   onClick={() => setExportFormat(format.value as any)}
                   className={`flex flex-col items-center space-y-1 p-3 rounded-lg border transition-colors ${
                     exportFormat === format.value
-                      ? 'bg-blue-100 border-blue-300 text-blue-700'
-                      : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                      ? "bg-blue-100 border-blue-300 text-blue-700"
+                      : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
                   }`}
                 >
                   <format.icon className="w-4 h-4" />
@@ -178,7 +183,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
             </div>
           </div>
 
-          {exportFormat === 'png' && (
+          {exportFormat === "png" && (
             <>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -221,24 +226,27 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ canvasRef, options }) => {
             className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Download className="w-4 h-4" />
-            <span>{exporting ? 'Exporting...' : `Export as ${exportFormat.toUpperCase()}`}</span>
+            <span>
+              {exporting
+                ? "Exporting..."
+                : `Export as ${exportFormat.toUpperCase()}`}
+            </span>
           </button>
         </div>
       </div>
 
       <div className="pt-4 border-t border-gray-200">
-        <h4 className="text-xs font-semibold text-gray-700 mb-2">Current Settings</h4>
+        <h4 className="text-xs font-semibold text-gray-700 mb-2">
+          Current Settings
+        </h4>
         <div className="text-xs text-gray-600 space-y-1">
-          <div>Size: {options.size}×{options.size}px</div>
+          <div>
+            Size: {options.size}×{options.size}px
+          </div>
           <div>Error Correction: {options.errorCorrectionLevel}</div>
           <div>Shape: {options.shape}</div>
-          <div>Logo: {options.logoFile ? 'Yes' : 'No'}</div>
-          <div>Effects: {[
-            options.hasGradient && 'Gradient',
-            options.hasShadow && 'Shadow',
-            options.hasGlow && 'Glow',
-            options.has3D && '3D'
-          ].filter(Boolean).join(', ') || 'None'}</div>
+          <div>Logo: {options.logoFile ? "Yes" : "No"}</div>
+          <div>Gradient: {options.hasGradient ? "Yes" : "No"}</div>
         </div>
       </div>
 

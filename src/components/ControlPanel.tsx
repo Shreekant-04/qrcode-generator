@@ -1,6 +1,6 @@
-import React from 'react';
-import { Upload, Palette, Layers, Sparkles } from 'lucide-react';
-import { QRCodeOptions } from '../types/qrcode';
+import React from "react";
+import { Upload, Palette, Layers } from "lucide-react";
+import { QRCodeOptions } from "../types/qrcode";
 
 interface ControlPanelProps {
   options: QRCodeOptions;
@@ -11,14 +11,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setOptions(prev => ({ ...prev, logoFile: file }));
-    }
-  };
-
-  const handleBackgroundImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setOptions(prev => ({ ...prev, backgroundImage: file }));
+      setOptions((prev) => ({ ...prev, logoFile: file }));
     }
   };
 
@@ -40,13 +33,23 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
               <input
                 type="color"
                 value={options.foregroundColor}
-                onChange={(e) => setOptions(prev => ({ ...prev, foregroundColor: e.target.value }))}
+                onChange={(e) =>
+                  setOptions((prev) => ({
+                    ...prev,
+                    foregroundColor: e.target.value,
+                  }))
+                }
                 className="w-10 h-8 rounded border border-gray-300"
               />
               <input
                 type="text"
                 value={options.foregroundColor}
-                onChange={(e) => setOptions(prev => ({ ...prev, foregroundColor: e.target.value }))}
+                onChange={(e) =>
+                  setOptions((prev) => ({
+                    ...prev,
+                    foregroundColor: e.target.value,
+                  }))
+                }
                 className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded"
               />
             </div>
@@ -60,14 +63,24 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
               <input
                 type="color"
                 value={options.backgroundColor}
-                onChange={(e) => setOptions(prev => ({ ...prev, backgroundColor: e.target.value }))}
+                onChange={(e) =>
+                  setOptions((prev) => ({
+                    ...prev,
+                    backgroundColor: e.target.value,
+                  }))
+                }
                 className="w-10 h-8 rounded border border-gray-300"
                 disabled={options.isTransparent}
               />
               <input
                 type="text"
                 value={options.backgroundColor}
-                onChange={(e) => setOptions(prev => ({ ...prev, backgroundColor: e.target.value }))}
+                onChange={(e) =>
+                  setOptions((prev) => ({
+                    ...prev,
+                    backgroundColor: e.target.value,
+                  }))
+                }
                 className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded"
                 disabled={options.isTransparent}
               />
@@ -80,7 +93,12 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
             type="checkbox"
             id="transparent"
             checked={options.isTransparent}
-            onChange={(e) => setOptions(prev => ({ ...prev, isTransparent: e.target.checked }))}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                isTransparent: e.target.checked,
+              }))
+            }
             className="rounded"
           />
           <label htmlFor="transparent" className="ml-2 text-sm text-gray-700">
@@ -96,10 +114,15 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
             type="checkbox"
             id="gradient"
             checked={options.hasGradient}
-            onChange={(e) => setOptions(prev => ({ ...prev, hasGradient: e.target.checked }))}
+            onChange={(e) =>
+              setOptions((prev) => ({ ...prev, hasGradient: e.target.checked }))
+            }
             className="rounded"
           />
-          <label htmlFor="gradient" className="ml-2 text-sm font-medium text-gray-700">
+          <label
+            htmlFor="gradient"
+            className="ml-2 text-sm font-medium text-gray-700"
+          >
             Use gradient
           </label>
         </div>
@@ -114,7 +137,12 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
                 <input
                   type="color"
                   value={options.gradientStart}
-                  onChange={(e) => setOptions(prev => ({ ...prev, gradientStart: e.target.value }))}
+                  onChange={(e) =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      gradientStart: e.target.value,
+                    }))
+                  }
                   className="w-full h-8 rounded border border-gray-300"
                 />
               </div>
@@ -125,7 +153,12 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
                 <input
                   type="color"
                   value={options.gradientEnd}
-                  onChange={(e) => setOptions(prev => ({ ...prev, gradientEnd: e.target.value }))}
+                  onChange={(e) =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      gradientEnd: e.target.value,
+                    }))
+                  }
                   className="w-full h-8 rounded border border-gray-300"
                 />
               </div>
@@ -136,7 +169,12 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
               </label>
               <select
                 value={options.gradientDirection}
-                onChange={(e) => setOptions(prev => ({ ...prev, gradientDirection: e.target.value as any }))}
+                onChange={(e) =>
+                  setOptions((prev) => ({
+                    ...prev,
+                    gradientDirection: e.target.value as any,
+                  }))
+                }
                 className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
               >
                 <option value="horizontal">Horizontal</option>
@@ -161,7 +199,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
             <div className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 transition-colors cursor-pointer text-center">
               <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
               <span className="text-sm text-gray-600">
-                {options.logoFile ? options.logoFile.name : 'Upload logo'}
+                {options.logoFile ? options.logoFile.name : "Upload logo"}
               </span>
             </div>
             <input
@@ -184,9 +222,66 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
               max="40"
               step="2"
               value={options.logoSize}
-              onChange={(e) => setOptions(prev => ({ ...prev, logoSize: parseInt(e.target.value) }))}
+              onChange={(e) =>
+                setOptions((prev) => ({
+                  ...prev,
+                  logoSize: parseInt(e.target.value),
+                }))
+              }
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
             />
+          </div>
+        )}
+
+        {options.logoFile && (
+          <div className="space-y-4">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="logo-bg"
+                checked={options.logoHasBackground}
+                onChange={(e) =>
+                  setOptions((prev) => ({
+                    ...prev,
+                    logoHasBackground: e.target.checked,
+                  }))
+                }
+                className="rounded"
+              />
+              <label htmlFor="logo-bg" className="ml-2 text-sm text-gray-700">
+                Add logo background
+              </label>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-2">
+                Logo shape
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { value: "square", label: "Square" },
+                  { value: "circle", label: "Circle" },
+                  { value: "rounded", label: "Rounded" },
+                ].map((shape) => (
+                  <button
+                    key={shape.value}
+                    onClick={() =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        logoShape: shape.value as any,
+                      }))
+                    }
+                    className={`px-3 py-2 text-xs font-medium rounded-lg border transition-colors ${
+                      options.logoShape === shape.value
+                        ? "bg-blue-100 border-blue-300 text-blue-700"
+                        : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    {shape.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -200,86 +295,25 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
 
         <div className="grid grid-cols-2 gap-2">
           {[
-            { value: 'square', label: 'Square' },
-            { value: 'circle', label: 'Circle' },
-            { value: 'rounded', label: 'Rounded' },
-            { value: 'artistic', label: 'Artistic' }
-          ].map(shape => (
+            { value: "square", label: "Square" },
+            { value: "circle", label: "Circle" },
+            { value: "rounded", label: "Rounded" },
+            { value: "artistic", label: "Artistic" },
+          ].map((shape) => (
             <button
               key={shape.value}
-              onClick={() => setOptions(prev => ({ ...prev, shape: shape.value as any }))}
+              onClick={() =>
+                setOptions((prev) => ({ ...prev, shape: shape.value as any }))
+              }
               className={`px-3 py-2 text-xs font-medium rounded-lg border transition-colors ${
                 options.shape === shape.value
-                  ? 'bg-blue-100 border-blue-300 text-blue-700'
-                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                  ? "bg-blue-100 border-blue-300 text-blue-700"
+                  : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
               }`}
             >
               {shape.label}
             </button>
           ))}
-        </div>
-      </div>
-
-      {/* Effects Section */}
-      <div className="space-y-4">
-        <div className="flex items-center space-x-2">
-          <Sparkles className="w-4 h-4 text-gray-600" />
-          <h3 className="text-sm font-semibold text-gray-900">Effects</h3>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="shadow"
-              checked={options.hasShadow}
-              onChange={(e) => setOptions(prev => ({ ...prev, hasShadow: e.target.checked }))}
-              className="rounded"
-            />
-            <label htmlFor="shadow" className="ml-2 text-sm text-gray-700">
-              Drop shadow
-            </label>
-          </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="glow"
-              checked={options.hasGlow}
-              onChange={(e) => setOptions(prev => ({ ...prev, hasGlow: e.target.checked }))}
-              className="rounded"
-            />
-            <label htmlFor="glow" className="ml-2 text-sm text-gray-700">
-              Glow effect
-            </label>
-          </div>
-
-          {options.hasGlow && (
-            <div className="pl-6">
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Glow Color
-              </label>
-              <input
-                type="color"
-                value={options.glowColor}
-                onChange={(e) => setOptions(prev => ({ ...prev, glowColor: e.target.value }))}
-                className="w-full h-8 rounded border border-gray-300"
-              />
-            </div>
-          )}
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="3d"
-              checked={options.has3D}
-              onChange={(e) => setOptions(prev => ({ ...prev, has3D: e.target.checked }))}
-              className="rounded"
-            />
-            <label htmlFor="3d" className="ml-2 text-sm text-gray-700">
-              3D effect
-            </label>
-          </div>
         </div>
       </div>
 
@@ -297,7 +331,12 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
             max="20"
             step="1"
             value={options.borderWidth}
-            onChange={(e) => setOptions(prev => ({ ...prev, borderWidth: parseInt(e.target.value) }))}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                borderWidth: parseInt(e.target.value),
+              }))
+            }
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
           />
         </div>
@@ -310,7 +349,9 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
             <input
               type="color"
               value={options.borderColor}
-              onChange={(e) => setOptions(prev => ({ ...prev, borderColor: e.target.value }))}
+              onChange={(e) =>
+                setOptions((prev) => ({ ...prev, borderColor: e.target.value }))
+              }
               className="w-full h-8 rounded border border-gray-300"
             />
           </div>
@@ -320,12 +361,17 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ options, setOptions }) => {
       {/* Call to Action */}
       <div className="space-y-4">
         <h3 className="text-sm font-semibold text-gray-900">Call to Action</h3>
-        
+
         <div>
           <input
             type="text"
             value={options.callToActionText}
-            onChange={(e) => setOptions(prev => ({ ...prev, callToActionText: e.target.value }))}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                callToActionText: e.target.value,
+              }))
+            }
             placeholder="e.g., 'Scan me!'"
             className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
